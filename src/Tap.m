@@ -4,7 +4,8 @@ CGEventRef callback(CGEventTapProxy proxy,
                     CGEventType type,
                     CGEventRef event,
                     void *refcon) {
-  return event;
+  Tap *tap = (Tap *)refcon;
+  return [tap processEvent:event withType:type];
 }
 
 @implementation Tap
@@ -21,7 +22,7 @@ CGEventRef callback(CGEventTapProxy proxy,
                         kCGEventTapOptionDefault,
                         kCGEventMaskForAllEvents,
                         callback,
-                        NULL);
+                        (void *)new);
     if (!new.tap) {
       NSLog(@"Failed to create event tap.\n");
       exit (1);
@@ -39,5 +40,9 @@ CGEventRef callback(CGEventTapProxy proxy,
 
 - (void) stop {
   CGEventTapEnable(self.tap, false);
+}
+
+- (CGEventRef) processEvent:(CGEventRef) event withType:(CGEventType) type {
+  return event;
 }
 @end
