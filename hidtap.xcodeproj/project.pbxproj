@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3713338611E569BC005884B9 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3713338511E569BC005884B9 /* ApplicationServices.framework */; };
+		37387E0A11E6BC1D005E3E05 /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = 37387E0911E6BC1D005E3E05 /* Config.m */; };
 		3738DF8511E42D7900DF3247 /* Tap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3738DF8411E42D7900DF3247 /* Tap.m */; };
 		8DD76F9A0486AA7600D96B5E /* hidtap.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* hidtap.m */; settings = {ATTRIBUTES = (); }; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
@@ -32,6 +33,8 @@
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32A70AAB03705E1F00C91783 /* hidtap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hidtap_Prefix.pch; sourceTree = "<group>"; };
 		3713338511E569BC005884B9 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		37387E0811E6BC1D005E3E05 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = src/Config.h; sourceTree = "<group>"; };
+		37387E0911E6BC1D005E3E05 /* Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Config.m; path = src/Config.m; sourceTree = "<group>"; };
 		3738DF8311E42D7900DF3247 /* Tap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tap.h; path = src/Tap.h; sourceTree = "<group>"; };
 		3738DF8411E42D7900DF3247 /* Tap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Tap.m; path = src/Tap.m; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* hidtap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hidtap; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +68,8 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				37387E0811E6BC1D005E3E05 /* Config.h */,
+				37387E0911E6BC1D005E3E05 /* Config.m */,
 				3738DF8311E42D7900DF3247 /* Tap.h */,
 				3738DF8411E42D7900DF3247 /* Tap.m */,
 				32A70AAB03705E1F00C91783 /* hidtap_Prefix.pch */,
@@ -143,6 +148,7 @@
 			files = (
 				8DD76F9A0486AA7600D96B5E /* hidtap.m in Sources */,
 				3738DF8511E42D7900DF3247 /* Tap.m in Sources */,
+				37387E0A11E6BC1D005E3E05 /* Config.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
