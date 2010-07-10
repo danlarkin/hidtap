@@ -18,11 +18,14 @@ CGEventRef callback(CGEventTapProxy proxy,
   Tap *new = [[self alloc] init];
 
   if (new) {
+    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) |
+      CGEventMaskBit(kCGEventKeyUp) |
+      CGEventMaskBit(kCGEventFlagsChanged);
     new.tap =
       CGEventTapCreate (kCGHIDEventTap,
                         kCGHeadInsertEventTap,
                         kCGEventTapOptionDefault,
-                        kCGEventMaskForAllEvents,
+                        mask,
                         callback,
                         (void *)new);
     if (!new.tap) {
