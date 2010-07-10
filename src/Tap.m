@@ -56,6 +56,11 @@ CGEventRef callback(CGEventTapProxy proxy,
   int received_keyboard =
     CGEventGetIntegerValueField(event, kCGKeyboardEventKeyboardType);
 
+  static CGEventFlags previous_flags = 0;
+  static CGEventFlags unapply_flags = 0;
+  CGEventFlags final_flags = received_flags;
+  bool update_previous_flags = YES;
+
   for(NSDictionary *modifier_dict in [Config getModifiers]) {
     NSString *keyboard = [modifier_dict valueForKey:@"Keyboard"];
     NSString *modifier = [modifier_dict valueForKey:@"Modifier"];
@@ -63,18 +68,23 @@ CGEventRef callback(CGEventTapProxy proxy,
 
     bool this_mod_on = [[self.modifiers valueForKey:modifier] boolValue];
 
+    CGKeyCode new_modifier = 0;
+    int mask = 0;
+    if ([modifier isEqualToString:@"Option"]) {
+      new_modifier = 58;
+      mask = kCGEventFlagMaskAlternate;
+    } else if ([modifier isEqualToString:@"Control"]) {
+      new_modifier = 62;
+      mask = kCGEventFlagMaskControl;
+    } else if ([modifier isEqualToString:@"Command"]) {
+      new_modifier = 54;
+      mask = kCGEventFlagMaskCommand;
+    }
+
     if(received_keyboard == [keyboard intValue]) {
       if(received_keycode == [keycode intValue]) {
-        event = nil;
-
-        CGKeyCode new_modifier = 0;
-        if ([modifier isEqualToString:@"Option"]) {
-          new_modifier = 58;
-        } else if ([modifier isEqualToString:@"Control"]) {
-          new_modifier = 59;
-        } else if ([modifier isEqualToString:@"Command"]) {
-          new_modifier = 55;
-        }
+        event = nil; // swallow the original event, since we replace
+                     // it with our own
 
         if (type == kCGEventKeyDown) {
           if (!this_mod_on) {
@@ -94,16 +104,50 @@ CGEventRef callback(CGEventTapProxy proxy,
           }
           [self.modifiers setValue:[NSNumber numberWithBool:NO]
                             forKey:modifier];
+        } else if (type == kCGEventFlagsChanged) {
+          CGEventFlags new_flags = (received_flags & ~previous_flags);
+          bool command = (new_flags & kCGEventFlagMaskCommand) != 0;
+          bool option = (new_flags & kCGEventFlagMaskAlternate) != 0;
+          bool control = (new_flags & kCGEventFlagMaskControl) != 0;
+          if (command) {
+            unapply_flags = kCGEventFlagMaskCommand;
+          } else if (option) {
+            unapply_flags = kCGEventFlagMaskAlternate;
+          } else if (control) {
+            unapply_flags = kCGEventFlagMaskControl;
+          } else {
+            unapply_flags = 0;
+          }
+
+          if (unapply_flags) {
+            update_previous_flags = NO;
+            [self.modifiers setValue:[NSNumber numberWithBool:YES]
+                              forKey:modifier];
+          } else {
+            [self.modifiers setValue:[NSNumber numberWithBool:NO]
+                              forKey:modifier];
+          }
         }
 
       } else {
         if (this_mod_on) {
-          CGEventSetFlags(event, (received_flags | kCGEventFlagMaskAlternate));
+          final_flags |= mask;
+        }
+        if (unapply_flags) {
+          final_flags &= ~unapply_flags;
         }
       }
 
     }
 
+  }
+
+  if (update_previous_flags) {
+    previous_flags = received_flags;
+  }
+
+  if (event) {
+    CGEventSetFlags(event, final_flags);
   }
 
   return event;
