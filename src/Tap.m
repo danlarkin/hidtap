@@ -11,6 +11,7 @@ CGEventRef callback(CGEventTapProxy proxy,
 @implementation Tap
 
 @synthesize tap;
+@synthesize modifiers;
 
 + (Tap*) tapOnRunLoop: (NSRunLoop*)loop {
   Tap *new = [[self alloc] init];
@@ -34,6 +35,8 @@ CGEventRef callback(CGEventTapProxy proxy,
     CGEventTapEnable (new.tap, true);
 
   }
+
+  new.modifiers = [NSMutableDictionary dictionaryWithCapacity:3];
 
   return new;
 }
