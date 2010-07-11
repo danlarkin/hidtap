@@ -50,6 +50,14 @@ CGEventRef callback(CGEventTapProxy proxy,
 }
 
 - (CGEventRef) processEvent:(CGEventRef) event withType:(CGEventType) type {
+  // sometimes OS X sends us a kCGEventTapDisabledByTimeout
+  // but, screw them! let's reenable it!
+  if (type==kCGEventTapDisabledByTimeout) {
+    //NSLog(@"Reenabling tap.");
+    CGEventTapEnable(self.tap, YES);
+    return event;
+  }
+
   CGKeyCode received_keycode =
     (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
   CGEventFlags received_flags = CGEventGetFlags(event);
