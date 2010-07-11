@@ -36,7 +36,7 @@ CGEventRef callback(CGEventTapProxy proxy,
     [loop addPort:[NSMachPort portWithMachPort:CFMachPortGetPort(new.tap)]
           forMode:NSDefaultRunLoopMode];
 
-    CGEventTapEnable (new.tap, true);
+    CGEventTapEnable (new.tap, YES);
 
   }
 
@@ -46,7 +46,7 @@ CGEventRef callback(CGEventTapProxy proxy,
 }
 
 - (void) stop {
-  CGEventTapEnable(self.tap, false);
+  CGEventTapEnable(self.tap, NO);
 }
 
 - (CGEventRef) processEvent:(CGEventRef) event withType:(CGEventType) type {
