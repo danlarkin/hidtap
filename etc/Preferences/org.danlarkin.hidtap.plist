@@ -1,0 +1,14 @@
+{
+	Modifiers = (
+		{
+			Modifier = Control;
+			Keyboard = 43;
+			Keycode = 61;
+		},
+		{
+			Modifier = Option;
+			Keyboard = 40;
+			Keycode = 110;
+		},
+	);
+}
